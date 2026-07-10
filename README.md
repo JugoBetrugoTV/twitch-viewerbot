@@ -14,6 +14,7 @@ nothing here touches the game itself.
 | **Mythic+ Ladder** | Best keystone runs for a realm + dungeon this week |
 | **Classes & Specs** | Every class and its specializations (scaffold for build guides) |
 | **Realms** | Online status and population for every realm, filterable |
+| **Guides** | Markdown-based strategy articles / tier lists (Skill-Capped style) |
 
 The **Classes** section is a scaffold in the Skill-Capped sense — the class/spec
 data is live from Blizzard, but written strategy/guide content is left for you
@@ -95,6 +96,21 @@ Fly.io, Google Cloud Run, a VPS, …). The pattern is always the same:
    `BNET_CLIENT_ID` and `BNET_CLIENT_SECRET`.
 3. Deploy. The host builds the image, runs `npm start`, and serves the site on
    its public URL. Everyone can now use it — no login, no keys for visitors.
+
+### One-click on Render
+
+A `render.yaml` Blueprint is included. On <https://render.com>: **New + →
+Blueprint → pick this repo**. Render reads the Blueprint, builds the Docker
+image and deploys it. You'll be prompted for `BNET_CLIENT_ID` /
+`BNET_CLIENT_SECRET` (they're marked `sync: false`, so they're never committed).
+The free plan is enough to start.
+
+### Adding guides
+
+The **Guides** page renders Markdown files from `web/src/content/guides/`. To
+publish an article, drop in a new `.md` file with a small frontmatter header
+(`title`, `category`, `excerpt`, `updated`) — it appears automatically. See
+`welcome.md` for the format.
 
 Locally you can test the exact production image with:
 
