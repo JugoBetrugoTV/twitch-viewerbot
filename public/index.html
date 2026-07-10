@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WoW Armory</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>⚔️ WoW Armory</h1>
+    <p class="tagline">Character lookup powered by the official Blizzard API</p>
+  </header>
+
+  <main>
+    <form id="search" class="search">
+      <select id="region" aria-label="Region">
+        <option value="eu">EU</option>
+        <option value="us">US</option>
+        <option value="kr">KR</option>
+        <option value="tw">TW</option>
+      </select>
+      <input id="realm" placeholder="Realm (e.g. Twisting Nether)" autocomplete="off" required />
+      <input id="name" placeholder="Character name" autocomplete="off" required />
+      <button type="submit">Search</button>
+    </form>
+
+    <p id="status" class="status" role="status"></p>
+
+    <section id="result" class="result hidden"></section>
+  </main>
+
+  <footer class="footer">
+    <span>Data from the Blizzard Battle.net API. Not affiliated with Blizzard Entertainment.</span>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
