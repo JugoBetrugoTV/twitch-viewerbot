@@ -19,6 +19,25 @@ The **Classes** section is a scaffold in the Skill-Capped sense — the class/sp
 data is live from Blizzard, but written strategy/guide content is left for you
 to fill in.
 
+## Who needs API credentials? (Important)
+
+**Only you, the operator, and only once — when you deploy.** Visitors never
+enter anything.
+
+The Blizzard credentials live in a server-side `.env` (or your host's
+environment variables). They are used to fetch data on behalf of *all* visitors
+and are never sent to the browser. This is exactly how drustvar.com and
+check-pvp work: one app registration on their server, and everyone else just
+opens the website.
+
+```
+Visitor's browser ──▶ your server (holds the ONE Blizzard key) ──▶ Blizzard API
+   (no key needed)          (key set once at deploy time)
+```
+
+There is no way to run a public WoW-data site without a server-side Blizzard
+key — the API requires one. But your users will never see it or need one.
+
 ## Architecture
 
 ```
@@ -58,13 +77,44 @@ npm run dev
 ```
 Opens the React app on <http://localhost:5173> with the API on `:3000`.
 
-### Production
+### Production (local)
 
 ```bash
 npm run build      # builds the React app into web/dist
 npm start          # Express serves API + frontend on :3000
 ```
 Then open <http://localhost:3000>.
+
+## Deploy it publicly (so anyone can use it)
+
+The repo ships a `Dockerfile`, so any container host works (Render, Railway,
+Fly.io, Google Cloud Run, a VPS, …). The pattern is always the same:
+
+1. Point the host at this repo (it auto-detects the `Dockerfile`).
+2. Set two environment variables on the host:
+   `BNET_CLIENT_ID` and `BNET_CLIENT_SECRET`.
+3. Deploy. The host builds the image, runs `npm start`, and serves the site on
+   its public URL. Everyone can now use it — no login, no keys for visitors.
+
+Locally you can test the exact production image with:
+
+```bash
+docker build -t azeroth-armory .
+docker run -p 3000:3000 \
+  -e BNET_CLIENT_ID=xxx -e BNET_CLIENT_SECRET=yyy \
+  azeroth-armory
+```
+
+## Install as an app (PWA)
+
+The site is a Progressive Web App: once it's hosted over HTTPS, visitors can
+install it straight from the browser — desktop (install icon in the address
+bar) and mobile ("Add to Home Screen"). It then opens in its own window like a
+native app, with an offline-capable app shell. No app store required.
+
+For a true store-distributed desktop/mobile build later, wrap this same site in
+[Tauri](https://tauri.app/) or [Capacitor](https://capacitorjs.com/) — the
+frontend stays exactly as-is and points at your hosted API.
 
 ## API endpoints
 
