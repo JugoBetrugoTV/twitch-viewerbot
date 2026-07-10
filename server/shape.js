@@ -63,8 +63,36 @@ function shapeMythic(mythic) {
   };
 }
 
+function shapePvpTalents(specs) {
+  if (!specs?.specializations) return [];
+  const activeId = specs.active_specialization?.id;
+  const active =
+    specs.specializations.find((s) => s.specialization?.id === activeId) ||
+    specs.specializations[0];
+  const loadout = active?.loadouts?.find((l) => l.is_active) || active?.loadouts?.[0];
+  return (loadout?.selected_pvp_talents || active?.pvp_talent_slots || [])
+    .map((t) => t.selected?.talent?.name || t.talent?.name)
+    .filter(Boolean);
+}
+
+function shapeRaids(raids) {
+  if (!raids?.expansions?.length) return [];
+  const latest = raids.expansions[raids.expansions.length - 1];
+  return (latest.instances || []).map((inst) => {
+    const modes = {};
+    for (const m of inst.modes || []) {
+      const diff = m.difficulty?.type; // NORMAL | HEROIC | MYTHIC
+      modes[diff] = {
+        killed: m.progress?.completed_count ?? 0,
+        total: m.progress?.total_count ?? 0,
+      };
+    }
+    return { name: inst.instance?.name, modes };
+  });
+}
+
 export function shapeCharacter(raw, region) {
-  const { summary, media, equipment, pvpSummary, brackets, mythic } = raw;
+  const { summary, media, equipment, specs, pvpSummary, brackets, mythic, raids } = raw;
 
   const avatar = media?.assets?.find((a) => a.key === 'avatar')?.value
     || media?.assets?.find((a) => a.key === 'main-raw')?.value
@@ -90,6 +118,7 @@ export function shapeCharacter(raw, region) {
     gear: shapeGear(equipment),
     pvp: {
       honorLevel: pvpSummary?.honor_level ?? null,
+      talents: shapePvpTalents(specs),
       brackets: {
         '2v2': shapeBracket(brackets.twos),
         '3v3': shapeBracket(brackets.threes),
@@ -97,5 +126,6 @@ export function shapeCharacter(raw, region) {
       },
     },
     mythicPlus: shapeMythic(mythic),
+    raids: shapeRaids(raids),
   };
 }
