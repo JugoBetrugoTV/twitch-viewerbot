@@ -6,6 +6,7 @@ const tiles = [
   { to: '/mythic', ico: '🗝️', title: 'Mythic+ Ladder', desc: 'Best keystone runs per realm and dungeon this week.' },
   { to: '/classes', ico: '📖', title: 'Classes & Specs', desc: 'Every class and specialization at a glance.' },
   { to: '/realms', ico: '🌐', title: 'Realm Status', desc: 'Live online status and population for every realm.' },
+  { to: '/guides', ico: '📝', title: 'Guides & Articles', desc: 'Strategy articles and tier lists — Skill-Capped style.' },
 ];
 
 export default function Home() {

@@ -5,6 +5,8 @@ import PvPLadder from './pages/PvPLadder.jsx';
 import MythicLadder from './pages/MythicLadder.jsx';
 import Classes from './pages/Classes.jsx';
 import Realms from './pages/Realms.jsx';
+import Guides from './pages/Guides.jsx';
+import GuideArticle from './pages/GuideArticle.jsx';
 
 function Nav() {
   const link = ({ isActive }) => 'link' + (isActive ? ' active' : '');
@@ -16,6 +18,7 @@ function Nav() {
       <NavLink to="/mythic" className={link}>Mythic+</NavLink>
       <NavLink to="/classes" className={link}>Classes</NavLink>
       <NavLink to="/realms" className={link}>Realms</NavLink>
+      <NavLink to="/guides" className={link}>Guides</NavLink>
     </nav>
   );
 }
@@ -32,6 +35,8 @@ export default function App() {
           <Route path="/mythic" element={<MythicLadder />} />
           <Route path="/classes" element={<Classes />} />
           <Route path="/realms" element={<Realms />} />
+          <Route path="/guides" element={<Guides />} />
+          <Route path="/guides/:slug" element={<GuideArticle />} />
         </Routes>
       </div>
     </>
